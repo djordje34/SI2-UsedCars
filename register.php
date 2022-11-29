@@ -56,7 +56,7 @@ require 'server.php';
 
 						
 							<div class="d-flex justify-content-center mt-3 login_container">
-				 	<input type="submit" name="register" class="btn login_btn" value="Registracija"></button>
+				 	<input type="submit" name="register" class="btn login_btn" value="Registracija">
 				   </div>
 					</form>
 				</div>

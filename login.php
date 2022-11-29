@@ -1,5 +1,5 @@
 <?php
-require 'server.php';
+include "navbar.php";
 ?>
 
 
@@ -53,7 +53,7 @@ require 'server.php';
 				   </div>
 					</form>
 				</div>
-		
+				<p id="announcer"> <?php echo $err;?></p>
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
 						Nemate nalog? <a href="register.php" class="ml-2">Registrujte se</a>

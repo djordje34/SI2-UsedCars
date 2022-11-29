@@ -1,8 +1,11 @@
 <?php
+
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "mydb";
+$err="";
 $errors = array(); 
 // Create connection
 $db = mysqli_connect('localhost', 'root','', 'mydb');
@@ -11,6 +14,12 @@ if ($db->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+function checkIfLogged(){
+  if (!$_SESSION){
+    return false;
+  }
+  return $_SESSION['loggedin'];
+}
 
 function get_user_ID($korisnik)
 {
@@ -33,7 +42,6 @@ if (isset($_POST['register']))
   $email = mysqli_real_escape_string($db, $_POST['email']);
   $password = mysqli_real_escape_string($db, $_POST['password']);
 
-echo $username.$email.$password;
 
   // form validation: ensure that the form is correctly filled ...
   // by adding (array_push()) corresponding error unto $errors array
@@ -61,8 +69,9 @@ echo $username.$email.$password;
       mysqli_stmt_prepare($db1, "INSERT INTO user (username, email, password) VALUES(?,?,?)");
       mysqli_stmt_bind_param($db1, "sss", $username, $email,$hashed_password);
       mysqli_stmt_execute($db1);
-    
+      
       $id=get_user_ID($username);
+
       mysqli_stmt_prepare($db1, "INSERT INTO customer (c_id) VALUES(?)");
       mysqli_stmt_bind_param($db1, "i", $id);
       mysqli_stmt_execute($db1);
@@ -95,7 +104,8 @@ if(isset($_POST["login"])){
       if (password_verify($password, $passworddb))
       {
         $_SESSION['username'] = $username;
-        $_SESSION['loggedin']= true;
+        $_SESSION['loggedin'] = true;
+        
         $id=get_user_ID($username);
         $_SESSION['id']=$id;
         mysqli_stmt_prepare($db1, "SELECT email, balance, full_name FROM user u, customer c WHERE c_id=u_id AND u_id=?");
@@ -116,12 +126,15 @@ if(isset($_POST["login"])){
       }
       else
       {
-        array_push($errors, "Wrong username/password combination");
+          $err="Pogrešno korisničko ime ili lozinka";
+        
       }
     }
-  
-
+    
 
 }
-
+if(isset($_POST["izloguj"])){
+  session_destroy();
+  header("location:index.php");
+}
 ?>
