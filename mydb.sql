@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 21, 2022 at 06:00 PM
+-- Generation Time: Nov 29, 2022 at 09:01 PM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -36,6 +36,30 @@ CREATE TABLE IF NOT EXISTS `admin` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `body`
+--
+
+DROP TABLE IF EXISTS `body`;
+CREATE TABLE IF NOT EXISTS `body` (
+  `body_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`body_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `body`
+--
+
+INSERT INTO `body` (`body_id`, `type`) VALUES
+(1, 'sedan'),
+(2, 'hatchback'),
+(3, 'coupe'),
+(4, 'suv'),
+(5, 'van');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cars`
 --
 
@@ -44,8 +68,7 @@ CREATE TABLE IF NOT EXISTS `cars` (
   `b_id` int(11) NOT NULL AUTO_INCREMENT,
   `brand` varchar(45) DEFAULT NULL,
   `model` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`b_id`),
-  UNIQUE KEY `b_id_UNIQUE` (`b_id`)
+  PRIMARY KEY (`b_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -62,11 +85,13 @@ CREATE TABLE IF NOT EXISTS `cars_instance` (
   `mileage` varchar(45) DEFAULT NULL,
   `year` varchar(45) DEFAULT NULL,
   `transmission` varchar(45) DEFAULT NULL,
-  `body` varchar(45) DEFAULT NULL,
   `color` varchar(45) DEFAULT NULL,
   `state` varchar(45) DEFAULT NULL,
+  `motor` varchar(45) DEFAULT NULL,
+  `body_id` int(11) NOT NULL,
   PRIMARY KEY (`i_id`),
-  KEY `fk_Cars_instance_Cars` (`b_id`)
+  KEY `fk_Cars_instance_Cars` (`b_id`),
+  KEY `fk_Cars_Instance_Body1` (`body_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -80,6 +105,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `c_id` int(11) NOT NULL,
   `balance` varchar(45) DEFAULT NULL,
   `full_name` varchar(45) DEFAULT NULL,
+  `location` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`c_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -87,8 +113,8 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`c_id`, `balance`, `full_name`) VALUES
-(2, NULL, NULL);
+INSERT INTO `customer` (`c_id`, `balance`, `full_name`, `location`) VALUES
+(1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -128,18 +154,18 @@ CREATE TABLE IF NOT EXISTS `customer_is_selling` (
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `u_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`u_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`u_id`, `username`, `email`, `password`) VALUES
-(2, 'djordje34', 'djordje00karisic@gmail.com', '$2y$10$22.lDWLc2ZPKO9bvK6oZgeQ7f1G2VLmY6cyA0rYM7W8M0vufG8U4a');
+(1, 'djordje34', 'djordje00karisic@gmail.com', '$2y$10$tQp21X9tpvznGJDrp7TPS.Hq1noMV/nOpOjStAvv8stKwtSUQZfD6');
 
 --
 -- Constraints for dumped tables
@@ -155,6 +181,7 @@ ALTER TABLE `admin`
 -- Constraints for table `cars_instance`
 --
 ALTER TABLE `cars_instance`
+  ADD CONSTRAINT `fk_Cars_Instance_Body1` FOREIGN KEY (`body_id`) REFERENCES `body` (`body_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_Cars_instance_Cars` FOREIGN KEY (`b_id`) REFERENCES `cars` (`b_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --

@@ -28,3 +28,24 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.logo{
+  color:#EB6440 !important;
+  
+}
+
+.logo:hover{
+  transform: scale(1.2,1.2);
+  -webkit-transform:scale(1.2,1.2);
+  -moz-transform:scale(1.2,1.2);
+  transition: ease 0.5s;
+}
+
+.overloadGenButton{
+  background-color: #EB6440;
+  
+}
+
+.overloadGenButton:hover{
+  background-color:#60a3bc;
+}

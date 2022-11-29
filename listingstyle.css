@@ -1,0 +1,30 @@
+.productsList{
+    background-color: #f1f1f1;
+    margin:5% 5%;
+}
+.product{
+    border-left: 3px solid #EB6440;
+    border-top: 3px solid #EB6440;
+    border-right: 3px solid #EB6440;
+}
+.productsList .product::after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+
+.productsList .product .productImage{
+    float: left;
+}
+
+.productsList .product .productInfo {
+    float: left;
+}
+.specs{
+
+    border-left:3px solid #EB6440;
+    right:0%;
+    width:25%;
+    height:150px;
+    float:right;
+}
