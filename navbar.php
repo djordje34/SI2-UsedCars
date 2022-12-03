@@ -41,7 +41,7 @@ include 'server.php';
       <?php if (checkIfLogged()){
         echo "
         <a class='nav-link active' aria-current='page' href='#'>Početna</a>
-        <a class='nav-link' href='#'>Moj profil</a>
+        <a class='nav-link' href='profil.php'>Moj profil</a>
         <a class='nav-link' href='#'>Moji oglasi</a>
         ";
       }?>
