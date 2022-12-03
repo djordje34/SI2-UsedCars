@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 29, 2022 at 09:01 PM
+-- Generation Time: Dec 03, 2022 at 10:30 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
 --
 
 INSERT INTO `customer` (`c_id`, `balance`, `full_name`, `location`) VALUES
-(1, NULL, NULL, NULL);
+(1, NULL, 'Djordje Karisic', NULL);
 
 -- --------------------------------------------------------
 

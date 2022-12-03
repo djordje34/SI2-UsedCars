@@ -49,3 +49,11 @@
 .overloadGenButton:hover{
   background-color:#60a3bc;
 }
+
+.container{
+  position:absolute;
+  left:10%;
+  width:80%;
+  height:100%;
+  background-color:white;
+}

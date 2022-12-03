@@ -129,10 +129,27 @@ if(isset($_POST["login"])){
           $err="Pogrešno korisničko ime ili lozinka";
         
       }
-    }
+    }}
     
+    if(isset($_POST["promeniatr"])){  #PROVERI DA LI JE ZAUZET USERNAME
+      $newusername = mysqli_real_escape_string($db, $_POST['username']);
+      $newemail= mysqli_real_escape_string($db, $_POST['email']);
 
-}
+      $newfname= mysqli_real_escape_string($db, $_POST['full_name']);
+      $db1=mysqli_stmt_init($db);
+      mysqli_stmt_prepare($db1, "UPDATE user SET username=?,email=? WHERE u_id=?");
+      mysqli_stmt_bind_param($db1, "ssi", $newusername,$newemail,$_SESSION['id']);
+      mysqli_stmt_execute($db1);
+      $_SESSION['username']=$newusername;
+      $_SESSION['email']=$newemail;
+
+      mysqli_stmt_prepare($db1, "UPDATE customer SET full_name=? WHERE c_id=?");
+      mysqli_stmt_bind_param($db1, "si", $newfname,$_SESSION['id']);
+      mysqli_stmt_execute($db1);
+      $_SESSION['full_name']=$newfname;
+
+    }
+
 if(isset($_POST["izloguj"])){
   session_destroy();
   header("location:index.php");
