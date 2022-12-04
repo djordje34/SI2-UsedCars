@@ -34,6 +34,24 @@ function get_user_ID($korisnik)
   return $id_user;
 }
 
+function check_if_username_in($username,$id){
+
+  $db = mysqli_connect('localhost', 'root','', 'mydb');
+  $db1=mysqli_stmt_init($db);
+  mysqli_stmt_prepare($db1, "SELECT u_id FROM user WHERE username=? AND u_id!=?");
+  mysqli_stmt_bind_param($db1, "si", $username,$id);
+  mysqli_stmt_execute($db1);
+  mysqli_stmt_bind_result($db1, $id_user);
+  mysqli_stmt_fetch($db1);
+  if ($id_user){
+    return true;
+  }
+  else{
+    return false;
+  }
+
+}
+
 
 
 if (isset($_POST['register']))
@@ -108,15 +126,16 @@ if(isset($_POST["login"])){
         
         $id=get_user_ID($username);
         $_SESSION['id']=$id;
-        mysqli_stmt_prepare($db1, "SELECT email, balance, full_name FROM user u, customer c WHERE c_id=u_id AND u_id=?");
+        mysqli_stmt_prepare($db1, "SELECT email, balance, full_name, location,broj_tel FROM user u, customer c WHERE c_id=u_id AND u_id=?");
         mysqli_stmt_bind_param($db1, "i", $id);
         mysqli_stmt_execute($db1);
-        mysqli_stmt_bind_result($db1, $email,$balance,$full_name);
+        mysqli_stmt_bind_result($db1, $email,$balance,$full_name,$location,$tel);
         mysqli_stmt_fetch($db1);
         $_SESSION['email']=$email;
         $_SESSION['balance']=$balance;
         $_SESSION['full_name']=$full_name;
-
+        $_SESSION['location']=$location;
+        $_SESSION['tel']=$tel;
         
         
     
@@ -131,11 +150,26 @@ if(isset($_POST["login"])){
       }
     }}
     
+    if (isset($_POST['username'])){
+      if ($_SESSION){
+      $newusername = mysqli_real_escape_string($db, $_POST['username']);
+      if(check_if_username_in($newusername,$_SESSION['id'])){
+        $response = "<span style='color: red;'>Zauzeto</span><script>$(':submit').attr('disabled', true);</script>";
+      }
+      else{
+        $response="<span style='color: green;'>Slobodno</span><script>$(':submit').attr('disabled', false);</script>";
+      }
+      echo $response;
+    }
+      
+    }
+
     if(isset($_POST["promeniatr"])){  #PROVERI DA LI JE ZAUZET USERNAME
       $newusername = mysqli_real_escape_string($db, $_POST['username']);
       $newemail= mysqli_real_escape_string($db, $_POST['email']);
-
+      $newlocation= mysqli_real_escape_string($db, $_POST['location']);
       $newfname= mysqli_real_escape_string($db, $_POST['full_name']);
+      $newtel=mysqli_real_escape_string($db, $_POST['tel']);
       $db1=mysqli_stmt_init($db);
       mysqli_stmt_prepare($db1, "UPDATE user SET username=?,email=? WHERE u_id=?");
       mysqli_stmt_bind_param($db1, "ssi", $newusername,$newemail,$_SESSION['id']);
@@ -143,12 +177,17 @@ if(isset($_POST["login"])){
       $_SESSION['username']=$newusername;
       $_SESSION['email']=$newemail;
 
-      mysqli_stmt_prepare($db1, "UPDATE customer SET full_name=? WHERE c_id=?");
-      mysqli_stmt_bind_param($db1, "si", $newfname,$_SESSION['id']);
+      mysqli_stmt_prepare($db1, "UPDATE customer SET full_name=?,location=?,broj_tel=? WHERE c_id=?");
+      mysqli_stmt_bind_param($db1, "sssi", $newfname,$newlocation,$newtel,$_SESSION['id']);
       mysqli_stmt_execute($db1);
       $_SESSION['full_name']=$newfname;
-
+      $_SESSION['location']= $newlocation;
+      $_SESSION['tel']=$newtel;
+      header("location:profil.php");
     }
+
+
+
 
 if(isset($_POST["izloguj"])){
   session_destroy();

@@ -10,12 +10,45 @@ if (!checkIfLogged()){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-$.get("https://ipinfo.io", function (response) {    //ne radi, popravi!
-    $("#address").html("Awesome " + response.city);
-}, "jsonp");
-</script>
 
+<script>
+var string = $('#locs').val(); // What i want to pass to php
+
+ $.ajax({
+    type: 'post', // the method (could be GET btw)
+    url: 'server.php', // The file where my php code is
+    data: {
+        'location': string // all variables i want to pass. In this case, only one.
+    },
+
+});
+
+$(document).ready(function(){
+
+   $("#username").keyup(function(){
+
+      var username = $(this).val().trim();
+    console.log(username);
+      if(username != ''){
+
+         $.ajax({
+            url: 'server.php',
+            type: 'post',
+            data: {username: username},
+            success: function(response){
+
+                $('#uname_response').html(response);
+                
+             }
+         });
+      }else{
+         $("#uname_response").html("");
+      }
+
+    });
+
+ });
+</script>
 
 
     <meta charset="UTF-8">
@@ -32,14 +65,16 @@ $.get("https://ipinfo.io", function (response) {    //ne radi, popravi!
 </head>
 <body>
     <div class="container">
-    <div class="d-flex justify-content-center form_container" style="margin: 5% 25% !important;padding:5%;background-color:#EB6440;">
+        <p></p>
+    <div class="d-flex justify-content-center form_container" style="margin: 0 25% !important;padding:5%;background-color:#EB6440;">
     <form method="POST">
 						<div class="input-group mb-3">
 							<div class="input-group-append">
                                 
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" name="username" class="form-control input_user" value="<?php echo $_SESSION['username']?>">
+							<input type="text" name="username" id="username" class="form-control input_user" value="<?php echo $_SESSION['username']?>">
+                            <span id="uname_response"></span>
                         </div>
 						<div class="input-group mb-3">
 							<div class="input-group-append">
@@ -56,15 +91,67 @@ $.get("https://ipinfo.io", function (response) {    //ne radi, popravi!
 
                         <div class="input-group mb-3">
                         <div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-location"></i></span>
+								<span class="input-group-text"><i class="fas fa-map-pin" aria-hidden="true"></i></span>
 							</div>
-                            <div>City: <span id="address"></span></div>
-</div>
+                            <select id="locs" name="location">
+                                <option value="<?php echo $_SESSION['location'] ?>" <?php if ($_SESSION['location']){
+                                                                                                        echo "selected>". $_SESSION['location']; 
+                                                                                                        }
+                                                                                                    else{
+                                                                                                        echo "disabled>". "Izaberite grad";
+                                                                                                    }
+                                                                                        echo "</option>";           
+                                ?>
+                                
+                            <option value="Belgrade">Belgrade</option>
+                            <option value="Bor District">Bor District</option>
+                            <option value="Braničevo District">Braničevo District</option>
+                            <option value="Central Banat District">Central Banat District</option>
+                            <option value="Jablanica District">Jablanica District</option>
+                            <option value="Kolubara District">Kolubara District</option>
+                            <option value="Mačva District">Mačva District</option>
+                            <option value="Moravica District">Moravica District</option>
+                            <option value="Nišava District">Nišava District</option>
+                            <option value="North Bačka District">North Bačka District</option>
+                            <option value="North Banat District">North Banat District</option>
+                            <option value="Pčinja District">Pčinja District</option>
+                            <option value="Pirot District">Pirot District</option>
+                            <option value="Podunavlje District">Podunavlje District</option>
+                            <option value="Pomoravlje District">Pomoravlje District</option>
+                            <option value="Rasina District">Rasina District</option>
+                            <option value="Raška District">Raška District</option>
+                            <option value="South Bačka District">South Bačka District</option>
+                            <option value="South Banat District">South Banat District</option>
+                            <option value="Srem District">Srem District</option>
+                            <option value="Šumadija District">Šumadija District</option>
+                            <option value="Toplica District">Toplica District</option>
+                            <option value="Vojvodina">Vojvodina</option>
+                            <option value="West Bačka District">West Bačka District</option>
+                            <option value="Zaječar District">Zaječar District</option>
+                            <option value="Zlatibor District">Zlatibor District</option>
+                        </select>
+                        <span>Trenutno izabrano: <?php
+                            if ($_SESSION['location']){
+                        echo $_SESSION['location'];
+                            }
+                            else{
+                                echo "Izaberite grad";
+                            }
+                        
+                        ?></span>
+                        </div>
 
+                        <div class="input-group mb-3">
+							<div class="input-group-append">
+								<span class="input-group-text"><i class="fas fa-inbox"></i></span>
+							</div>
+							<input type="tel" name="tel" size="15" class="form-control input_pass" value="<?php echo $_SESSION['tel'] ?>" placeholder="Broj telefona u formatu 06X XXX XXXX" pattern="06[0-9]{1} [0-9]{3} [0-9]{4}">
+                        </div>
+                        
 
                 <input class="btn btn-danger" style="color:#f1f1f1;background-color:#c0392b"  name="promeniatr" type="submit" id="button-addon1" value="Promeni">
 					</form>
-</div>
+    </div>
     </div>
 </body>
 </html>
