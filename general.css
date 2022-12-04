@@ -51,8 +51,7 @@
 }
 
 .container{
-  position:absolute;
-  left:10%;
+  position:relative;
   width:80%;
   height:100%;
   background-color:white;

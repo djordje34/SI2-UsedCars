@@ -1,5 +1,10 @@
 <?php
 include "navbar.php";
+
+if (checkIfLogged()){
+    header("location:index.php");
+}
+
 ?>
 
 
