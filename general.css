@@ -53,6 +53,34 @@
 .container{
   position:relative;
   width:80%;
-  height:100%;
   background-color:white;
+}
+
+.redirecter{
+  color:#f1f1f1;
+  background-color:#c0392b;
+  float:right;
+  margin:auto;
+}
+
+small{
+  text-align:center;
+}
+label{
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-size: .85em;
+}
+
+.form-check-input:checked {
+  background-color: #c0392b;
+  border-color:#c0392b;
+}
+
+textarea{
+  min-height:100px;
+  max-width:75%;
+  resize:vertical;
+  max-height:500px;
 }

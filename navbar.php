@@ -11,6 +11,7 @@ include 'server.php';
 <html>
     
 <head>
+  <meta charset="UTF-8">
 	<title>Udomi Auto</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -38,13 +39,20 @@ include 'server.php';
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-      <?php if (checkIfLogged()){
+      <?php if (checkIfLogged() && !$_SESSION['role']){
         echo "
         <a class='nav-link active' aria-current='page' href='index.php'>Početna</a>
         <a class='nav-link' href='profil.php'>Moj profil</a>
-        <a class='nav-link' href='#'>Moji oglasi</a>
+        <a class='nav-link' href='mojioglasi.php'>Moji oglasi</a>
+        <a class='nav-link' href='mojepretrage.php'>Moje pretrage</a>
+        <a class='nav-link' href='motocikl.php'>Pretraga motocikala</a>
         ";
-      }?>
+      }
+      if (checkIfLogged() && $_SESSION['role'] == 'sudo') {
+        echo "<a class='nav-link' href='administration.php'>Administrativni panel</a>";
+        echo "<a class='nav-link' href='dodajkorisnika.php'>Dodaj korisnika</a>";
+      }
+      ?>
 
       </div>
     </div>
@@ -55,6 +63,9 @@ include 'server.php';
         <input type='submit' name='izloguj'  class='btn btn-danger overloadGenButton' value='Izlogujte se'>";
             echo "
             </form>";
+          }
+          else{
+            echo "<a class='btn btn-danger' href='login.php' role='button'>Ulogujte se</a>";
           } ?>
         </button>
   </div>

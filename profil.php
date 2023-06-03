@@ -4,6 +4,9 @@ include "navbar.php";
 if (!checkIfLogged()){
     header("location:login.php");
 }
+if($_SESSION['role']){
+    header('location:administration.php');
+}
 ?>
 
 
@@ -34,7 +37,7 @@ $(document).ready(function(){
          $.ajax({
             url: 'server.php',
             type: 'post',
-            data: {username: username},
+            data: {usernameChecker: username},
             success: function(response){
 
                 $('#uname_response').html(response);
@@ -65,7 +68,6 @@ $(document).ready(function(){
 </head>
 <body>
     <div class="container">
-        <p></p>
     <div class="d-flex justify-content-center form_container" style="margin: 0 25% !important;padding:5%;background-color:#EB6440;">
     <form method="POST">
 						<div class="input-group mb-3">
@@ -149,9 +151,21 @@ $(document).ready(function(){
                         </div>
                         
 
-                <input class="btn btn-danger" style="color:#f1f1f1;background-color:#c0392b"  name="promeniatr" type="submit" id="button-addon1" value="Promeni">
+                        <div class="d-flex justify-content-center form_container m-5" style="background-color:#EB6440;">
+        <div class="row text-center m-6">
+        <h5>Dodaj sliku</h5>    
+
+
+    
+                        
+                <input class="btn btn-danger" style="color:#f1f1f1;background-color:#c0392b" id="changer"  name="promeniatr" type="submit" id="button-addon1" value="Promeni">
 					</form>
     </div>
+
+    
+
+
     </div>
+
 </body>
 </html>

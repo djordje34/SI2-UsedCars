@@ -24,7 +24,23 @@
 
     border-left:3px solid #EB6440;
     right:0%;
-    width:25%;
+    width:35%;
     height:150px;
     float:right;
 }
+
+span{
+    display: inline-block;
+    width:100%;
+}
+h4{
+    margin:0;
+    float:left;
+
+}
+img {
+    width: 200px; /* You can set the dimensions to whatever you want */
+    height: 200px;
+    object-fit: cover;
+}
+
